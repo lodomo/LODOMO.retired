@@ -99,10 +99,9 @@ def CMD_Loop():
     lodomo_logo = pygame.image.load('assets/images/themes/plain_logo.png').convert_alpha()
     plain_logo = pygame.image.load('assets/images/themes/plain_logo.png').convert_alpha()
     mint_logo = pygame.image.load('assets/images/themes/mint_logo.png').convert_alpha()
-    # TODO LEFT OFF HERE ON 7/21/2022 AT 707PM
-    strawberry_logo = pygame.image.load('assets/images/lodomo-logo.png').convert_alpha()
-    banana_logo = pygame.image.load('assets/images/lodomo-logo.png').convert_alpha()
-    peanut_logo = pygame.image.load('assets/images/lodomo-logo.png').convert_alpha()
+    strawberry_logo = pygame.image.load('assets/images/themes/strawberry_logo.png').convert_alpha()
+    banana_logo = pygame.image.load('assets/images/themes/banana_logo.png').convert_alpha()
+    peanut_logo = pygame.image.load('assets/images/themes/peanut_logo.png').convert_alpha()
     lodomo_location = (15, 2)
 
     result = ['', 0]
@@ -183,16 +182,19 @@ def CMD_Loop():
                 input_frame = create_frame(strawberry_frame_image, 366, 198, palette.color[20])
                 text_color = palette.color[25]
                 version_text_color = palette.color[25]
+                lodomo_logo = strawberry_logo
             if result[1] == 'BANANA':
                 background_color = palette.color[30]
                 input_frame = create_frame(banana_frame_image, 366, 198, palette.color[4])
                 text_color = palette.color[25]
                 version_text_color = palette.color[25]
+                lodomo_logo = banana_logo
             if result[1] == 'PEANUT':
                 background_color = palette.color[28]
                 input_frame = create_frame(peanut_frame_image, 366, 198, palette.color[31])
                 text_color = palette.color[25]
                 version_text_color = palette.color[31]
+                lodomo_logo = peanut_logo
 
 
 
