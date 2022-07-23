@@ -8,10 +8,14 @@ code = 'CODE'
 help = 'HELP'
 error = 'ERROR'
 theme = 'THEME'
+quit_request = 'QUIT'
+reboot = 'REBOOT'
 
 # CODES
-    # 0 - TEXT RESPONSE TO USER, NO FURTHER ACTION REQUIRED
-    # 1 - THEME CHANGE
+# 0 - TEXT RESPONSE TO USER, NO FURTHER ACTION REQUIRED
+# 1 - THEME CHANGE
+# 2 - QUIT
+# 3 - REBOOT
 
 cmd_inputs = {
     help: {
@@ -28,6 +32,17 @@ cmd_inputs = {
         response: 'TODAY\'S FLAVORS ARE: ' + ', '.join(themes.theme_names),
         code: 0
     },
+
+    # TESTING DELETE LATER
+    quit_request : {
+        response: 'THIS WILL NEVER SHOW UP',
+        code: 2
+    },
+
+    reboot : {
+        response: 'THIS WILL NEVER SHOW UP',
+        code: 3
+    }
 }
 
 for theme_style in themes.theme_names:
