@@ -14,7 +14,7 @@ class Theme:
         self.theme_logo = 'assets/images/themes/' + theme_name + '_logo.png'
 
 
-class CMD_Theme:
+class CMDTheme:
     def __init__(self, theme):
         frame_size = [366, 198]
         self.theme_frame = Load_Image(theme.frame_image)
@@ -25,16 +25,16 @@ class CMD_Theme:
         self.version_text_color = theme.version_text_color
         self.lodomo_logo = self.theme_logo
 
+
 def Load_Image(image_file):
     image_file = pygame.image.load(image_file).convert_alpha()
     return image_file
 
 
-def Get_Names(list):
+def Get_Names(input_list):
     new_list = []
-    for list_items in list:
+    for list_items in input_list:
         new_list.append(list_items.theme_name)
-    print(new_list)
     return new_list
 
 

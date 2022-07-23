@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 import fonts
 import themes
+import cmd_requests
 
 current_version = '0.01A.1'
 
@@ -31,39 +32,31 @@ clock = pygame.time.Clock()
 
 def command_prompt(user_input):
     input = user_input.upper()
-    response = [input]
     maximum_request = 50
+    response = []
+    input_dict = {}
 
     # restrict request length
     while len(input) > maximum_request:
         input = input[:-1]
 
     # Return 0 for further input from user. Return Text for further processing from script.
-    if input == 'HELP':
-        remark = 'TYPE THEME TO FOR LIST OF THEMES'
-        response.append(remark)
-        return [response, 0]
-    elif input in ['THEME', 'THEMES']:
-        remark = 'THEME MENU: PLAIN, MINT, STRAWBERRY, BANANA, PEANUT'
-        response.append(remark)
-        return [response, 0]
-    elif input in ['PLAIN', 'MINT', 'STRAWBERRY', 'BANANA', 'PEANUT']:
-        remark = 'THEME CHANGED TO ' + input
-        response.append(remark)
-        return [response, input]
-    elif input == '' or input == ' ':
-        return [response, 0]
+    if input in cmd_requests.cmd_inputs:
+        input_dict = cmd_requests.cmd_inputs[input]
     else:
-        error = '\'' + input + '\'' + ' IS NOT A COMMAND'
-        response.append(error)
-        return [response, 0]
+        input_dict = cmd_requests.cmd_inputs['ERROR']
+
+    response.append(input)
+    response.append(input_dict['RESPONSE'])
+    code = input_dict['CODE']
+    return [response, code]
 
 
 # CMD Loop
 def CMD_Loop():
     # Theme
     frame_size = [366, 198]
-    current_theme = themes.CMD_Theme(themes.plain)
+    current_theme = themes.CMDTheme(themes.plain)
     lodomo_location = (15, 2)
 
     # This pads the text. This needs to be fine-tuned.
@@ -105,7 +98,7 @@ def CMD_Loop():
         mouse_posit = pygame.mouse.get_pos()
         screen.blit(mouse_cursor, mouse_posit)
 
-        # Blink Cursor
+        # Blinking Cursor
         if blinking_timer < 30:
             blinking_timer += 1
         else:
@@ -128,35 +121,34 @@ def CMD_Loop():
                     for text in return_text:
                         main_text.append(text)
                     user_input = ''
-                elif event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_BACKSPACE:
                     user_input = user_input[:-1].upper()
-
-                elif event.unicode in valid_characters:
+                # WRITE IN ALL UPPER CASE
+                if event.unicode in valid_characters:
                     user_input += event.unicode.upper()
-
-                elif event.key == pygame.K_ESCAPE:
+                # Close On Escape
+                if event.key == pygame.K_ESCAPE:
                     cmd_running = not cmd_running
 
-        # START COMMAND PROMPT
-
+        # Update all the text not being used.
         for i in range(len(main_text)):
             text_surface = fonts.babyblocks.render(main_text[i], True, current_theme.text_color)
             screen.blit(text_surface, (text_padding_x, text_padding_y + (vertical_spacing * i)))
 
-        text_input_surface = fonts.babyblocks.render('> ' + user_input + blinking_cursor, False, current_theme.text_color)
+        # Put user inputs on the screen
+        display_input = user_input + blinking_cursor
+        text_input_surface = fonts.babyblocks.render('> ' + display_input, False, current_theme.text_color)
         screen.blit(text_input_surface, (text_padding_x, text_padding_y + vertical_spacing * len(main_text)))
 
         # Handle Inputs
         if result[1] != 0:
-
             # Change Themes
-            if result[0][0] in themes.theme_names:
+            if result[1] == 1:
                 theme_to_load = themes.Load_Theme(result[0][0])
-                current_theme = themes.CMD_Theme(theme_to_load)
+                current_theme = themes.CMDTheme(theme_to_load)
+            # Stop Requests
+            result[1] = 0
 
-        # END COMMAND PROMPT
-
-        result[1] = 0
         pygame.display.update()
         clock.tick(60)
 

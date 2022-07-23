@@ -1,7 +1,7 @@
 import pygame
 
-
 pygame.init()
+
 
 def create_frame(frame_image, width, height, color):
     thick = 7
