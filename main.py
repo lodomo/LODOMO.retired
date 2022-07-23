@@ -1,10 +1,9 @@
 import pygame
 from sys import exit
-import palette
 import fonts
-from create_frame import create_frame
+import themes
 
-current_version = '0.01A'
+current_version = '0.01A.1'
 
 # Initialize pygame.
 pygame.init()
@@ -62,21 +61,21 @@ def command_prompt(user_input):
 
 # CMD Loop
 def CMD_Loop():
-    # Style
-    background_color = palette.color[3]
-    text_color = palette.color[0]
-    version_text_color = palette.color[0]
+    # Theme
+    frame_size = [366, 198]
+    current_theme = themes.CMD_Theme(themes.plain)
+    lodomo_location = (15, 2)
 
     # This pads the text. This needs to be fine-tuned.
     frame_padding = 9
     text_padding_x = 20
     text_padding_y = 24
-    version_position = (335,208)
+    version_position = (335, 208)
 
     # This contains all the text displayed in CMD. TODO output to file.
     main_text = []
     
-    # Boot Text - Should "type out" on the screen. TODO
+    # Boot Text
     main_text.append('LOODOMO [VERSION 0.01A]')
     main_text.append('(C) L.D. MOON STUDIO. ALL RIGHTS RESERVED')
 
@@ -88,34 +87,18 @@ def CMD_Loop():
     valid_characters = '1234567890-=qwertyuiop[]asdfghjkl;zxcvbnm,./!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?\' '
     cmd_running = True
 
-    plain_frame_image = pygame.image.load('assets/images/themes/plain.png').convert_alpha()
-    mint_frame_image = pygame.image.load('assets/images/themes/mint.png').convert_alpha()
-    strawberry_frame_image = pygame.image.load('assets/images/themes/strawberry.png').convert_alpha()
-    banana_frame_image = pygame.image.load('assets/images/themes/banana.png').convert_alpha()
-    peanut_frame_image = pygame.image.load('assets/images/themes/peanut.png').convert_alpha()
-
-    input_frame = create_frame(plain_frame_image, 366, 198, palette.color[4])
-
-    lodomo_logo = pygame.image.load('assets/images/themes/plain_logo.png').convert_alpha()
-    plain_logo = pygame.image.load('assets/images/themes/plain_logo.png').convert_alpha()
-    mint_logo = pygame.image.load('assets/images/themes/mint_logo.png').convert_alpha()
-    strawberry_logo = pygame.image.load('assets/images/themes/strawberry_logo.png').convert_alpha()
-    banana_logo = pygame.image.load('assets/images/themes/banana_logo.png').convert_alpha()
-    peanut_logo = pygame.image.load('assets/images/themes/peanut_logo.png').convert_alpha()
-    lodomo_location = (15, 2)
-
     result = ['', 0]
 
     while cmd_running:
         # Fill the screen with background color.
-        screen.fill(background_color)
+        screen.fill(current_theme.background_color)
 
         # Draw the Frame
-        screen.blit(input_frame, (frame_padding, frame_padding))
-        screen.blit(lodomo_logo, lodomo_location)
+        screen.blit(current_theme.input_frame, (frame_padding, frame_padding))
+        screen.blit(current_theme.lodomo_logo, lodomo_location)
 
         # Draw version number
-        version_number = fonts.babyblocks.render('VERSION ' + current_version, False, version_text_color)
+        version_number = fonts.babyblocks.render('VERSION ' + current_version, False, current_theme.version_text_color)
         screen.blit(version_number, version_position)
 
         # Draw the Cursor
@@ -157,48 +140,19 @@ def CMD_Loop():
         # START COMMAND PROMPT
 
         for i in range(len(main_text)):
-            text_surface = fonts.babyblocks.render(main_text[i], True, text_color)
+            text_surface = fonts.babyblocks.render(main_text[i], True, current_theme.text_color)
             screen.blit(text_surface, (text_padding_x, text_padding_y + (vertical_spacing * i)))
 
-        text_input_surface = fonts.babyblocks.render('> ' + user_input + blinking_cursor, False, text_color)
+        text_input_surface = fonts.babyblocks.render('> ' + user_input + blinking_cursor, False, current_theme.text_color)
         screen.blit(text_input_surface, (text_padding_x, text_padding_y + vertical_spacing * len(main_text)))
 
         # Handle Inputs
         if result[1] != 0:
-            if result[1] == 'PLAIN':
-                background_color = palette.color[3]
-                input_frame = create_frame(plain_frame_image, 366, 198, palette.color[4])
-                text_color = palette.color[0]
-                version_text_color = palette.color[0]
-                lodomo_logo = plain_logo
-            if result[1] == 'MINT':
-                background_color = palette.color[18]
-                input_frame = create_frame(mint_frame_image, 366, 198, palette.color[4])
-                text_color = palette.color[10]
-                version_text_color = palette.color[10]
-                lodomo_logo = mint_logo
-            if result[1] == 'STRAWBERRY':
-                background_color = palette.color[23]
-                input_frame = create_frame(strawberry_frame_image, 366, 198, palette.color[20])
-                text_color = palette.color[25]
-                version_text_color = palette.color[25]
-                lodomo_logo = strawberry_logo
-            if result[1] == 'BANANA':
-                background_color = palette.color[30]
-                input_frame = create_frame(banana_frame_image, 366, 198, palette.color[4])
-                text_color = palette.color[25]
-                version_text_color = palette.color[25]
-                lodomo_logo = banana_logo
-            if result[1] == 'PEANUT':
-                background_color = palette.color[28]
-                input_frame = create_frame(peanut_frame_image, 366, 198, palette.color[31])
-                text_color = palette.color[25]
-                version_text_color = palette.color[31]
-                lodomo_logo = peanut_logo
 
-
-
-
+            # Change Themes
+            if result[0][0] in themes.theme_names:
+                theme_to_load = themes.Load_Theme(result[0][0])
+                current_theme = themes.CMD_Theme(theme_to_load)
 
         # END COMMAND PROMPT
 
