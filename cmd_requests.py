@@ -2,7 +2,7 @@ import themes
 
 # Dict Characteristics
 response = 'RESPONSE'
-code = 'CODE'
+action = 'action'
 
 # Requests
 help = 'HELP'
@@ -10,6 +10,8 @@ error = 'ERROR'
 theme = 'THEME'
 quit_request = 'QUIT'
 reboot = 'REBOOT'
+code = 'CODE'
+
 
 # CODES
 # 0 - TEXT RESPONSE TO USER, NO FURTHER ACTION REQUIRED
@@ -20,34 +22,39 @@ reboot = 'REBOOT'
 cmd_inputs = {
     help: {
         response: 'OPTIONS: THEME',
-        code: 0
+        action: 0
     },
 
     error: {
         response: 'COMMAND INVALID.',
-        code: 0
+        action: 0
     },
 
     theme: {
-        response: 'TODAY\'S FLAVORS ARE: ' + ', '.join(themes.theme_names),
-        code: 0
+        response: ', '.join(themes.theme_names),
+        action: 0
     },
 
     # TESTING DELETE LATER
-    quit_request : {
-        response: 'THIS WILL NEVER SHOW UP',
-        code: 2
+    quit_request: {
+        response: '',
+        action: 2
     },
 
-    reboot : {
-        response: 'THIS WILL NEVER SHOW UP',
-        code: 3
+    reboot: {
+        response: '',
+        action: 3
+    },
+
+    code: {
+        response: '',
+        action: 4
     }
 }
 
 for theme_style in themes.theme_names:
     temp_input = {
         response: 'THEME CHANGED TO ' + theme_style,
-        code: 1
+        action: 1
     }
     cmd_inputs[theme_style] = temp_input

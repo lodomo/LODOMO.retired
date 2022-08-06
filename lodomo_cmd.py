@@ -3,10 +3,12 @@ import themes
 import cmd_requests
 from sys import exit
 
+main_text = []
+max_request_length = 55
 
 def command_prompt(user_input):
     u_input = user_input.upper()
-    maximum_request = 50
+    maximum_request = max_request_length
     response = []
     input_dict = {}
 
@@ -37,21 +39,25 @@ def CMD_Loop(screen, current_version, pygame, mouse_cursor, clock):
     frame_padding = 9
     text_padding_x = 20
     text_padding_y = 24
-    version_position = (335, 208)
+
+    # Version Info
+    version_number = fonts.baby_blocks.render('VERSION ' + current_version, False, current_theme.version_text_color)
+    version_pos = (384 - version_number.get_width(), 209)
 
     # This contains all the text displayed in CMD. TODO output to file.
-    main_text = []
+    # main_text = []
 
     # Boot Text
-    main_text.append('LOODOMO [VERSION 0.01A]')
+    main_text.append('LODOMO [VERSION 0.01A]')
     main_text.append('(C) L.D. MOON STUDIO. ALL RIGHTS RESERVED')
 
-    main_text_max_lines = 20
-    vertical_spacing = 8
+    main_text_max_lines = 23
+    vertical_spacing = 7
     user_input = ''
     blinking_cursor = '|'
     blinking_timer = 0
     valid_characters = '1234567890-=qwertyuiop[]asdfghjkl;zxcvbnm,./!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?\' '
+    input_symbol = '>'
     cmd_running = True
 
     result = ['', 0]
@@ -65,8 +71,7 @@ def CMD_Loop(screen, current_version, pygame, mouse_cursor, clock):
         screen.blit(current_theme.lodomo_logo, lodomo_location)
 
         # Draw version number
-        version_number = fonts.babyblocks.render('VERSION ' + current_version, False, current_theme.version_text_color)
-        screen.blit(version_number, version_position)
+        screen.blit(version_number, version_pos)
 
         # Draw the Cursor
         mouse_posit = pygame.mouse.get_pos()
@@ -99,19 +104,18 @@ def CMD_Loop(screen, current_version, pygame, mouse_cursor, clock):
                     user_input = user_input[:-1].upper()
                 # WRITE IN ALL UPPER CASE
                 if event.unicode in valid_characters:
+                    if len(user_input) > max_request_length:
+                        user_input = user_input[0:max_request_length]
                     user_input += event.unicode.upper()
-                # Close On Escape
-                if event.key == pygame.K_ESCAPE:
-                    cmd_running = not cmd_running
 
         # Update all the text not being used.
         for i in range(len(main_text)):
-            text_surface = fonts.babyblocks.render(main_text[i], True, current_theme.text_color)
+            text_surface = fonts.default_font.render(main_text[i], True, current_theme.text_color)
             screen.blit(text_surface, (text_padding_x, text_padding_y + (vertical_spacing * i)))
 
         # Put user inputs on the screen
         display_input = user_input + blinking_cursor
-        text_input_surface = fonts.babyblocks.render('> ' + display_input, False, current_theme.text_color)
+        text_input_surface = fonts.default_font.render(input_symbol + display_input, False, current_theme.text_color)
         screen.blit(text_input_surface, (text_padding_x, text_padding_y + vertical_spacing * len(main_text)))
 
         # Handle Inputs
@@ -123,6 +127,8 @@ def CMD_Loop(screen, current_version, pygame, mouse_cursor, clock):
             if result[1] == 2:
                 return 2
             if result[1] == 3:
+                # Currently this is the only memory being used and clears it.
+                main_text.clear()
                 return 3
             # Stop Requests
             result[1] = 0

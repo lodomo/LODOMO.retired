@@ -1,5 +1,6 @@
 import pygame
 import lodomo_cmd
+import lodomo_code
 import time
 import functools
 
@@ -29,7 +30,8 @@ clock = pygame.time.Clock()
 
 # Programs
 cmd = lambda: lodomo_cmd.CMD_Loop(screen, current_version, pygame, mouse_cursor, clock)
-current_program = cmd
+code = lambda: lodomo_code.GAMECODE_Loop(screen, pygame, mouse_cursor, clock)
+current_program = code
 
 running = True
 
@@ -41,3 +43,5 @@ while running:
         quit()
     if next_action == 3:
         current_program = cmd
+    if next_action == 4:
+        current_program = code

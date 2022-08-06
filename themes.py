@@ -38,7 +38,7 @@ def Get_Names(input_list):
     return new_list
 
 
-plain = Theme('PLAIN', 3, 4, 0, 0)
+plain = Theme('PLAIN', 3, 4, 0, 2)
 mint = Theme('MINT', 18, 4, 10, 10)
 strawberry = Theme('STRAWBERRY', 23, 20, 25, 25)
 banana = Theme('BANANA', 30, 4, 25, 25)

@@ -2,6 +2,12 @@ import pygame.font
 
 pygame.font.init()
 
-skullboy = pygame.font.Font("assets/fonts/skullboy.ttf", 16)
-softsquare = pygame.font.Font("assets/fonts/softsquare_mono.ttf", 8)
-babyblocks = pygame.font.Font("assets/fonts/babyblocks.ttf", 8)
+pinch_mono = pygame.font.Font("assets/fonts/pinch_mono.ttf", 7)
+baby_blocks = pygame.font.Font("assets/fonts/baby_blocks.ttf", 8)
+
+default_font = pinch_mono
+
+
+def type(string, color, loc_x, loc_y, display):
+    surface = default_font.render(string, True, color)
+    return display.blit(surface, (loc_x, loc_y))
