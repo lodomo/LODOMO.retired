@@ -2,7 +2,7 @@ import themes
 
 # Dict Characteristics
 response = 'RESPONSE'
-action = 'action'
+action = 'ACTION'
 
 # Requests
 help = 'HELP'

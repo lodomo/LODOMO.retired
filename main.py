@@ -31,7 +31,7 @@ clock = pygame.time.Clock()
 # Programs
 cmd = lambda: lodomo_cmd.CMD_Loop(screen, current_version, pygame, mouse_cursor, clock)
 code = lambda: lodomo_code.GAMECODE_Loop(screen, pygame, mouse_cursor, clock)
-current_program = code
+current_program = cmd
 
 running = True
 

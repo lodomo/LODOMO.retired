@@ -24,8 +24,8 @@ def command_prompt(user_input):
 
     response.append(u_input)
     response.append(input_dict['RESPONSE'])
-    code = input_dict['CODE']
-    return [response, code]
+    action = input_dict['ACTION']
+    return [response, action]
 
 
 # CMD Loop
