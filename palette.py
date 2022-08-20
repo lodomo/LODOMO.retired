@@ -1,34 +1,33 @@
-color = [
-    "#ede4da",
-    "#bfb8b4",
-    "#918d8d",
-    "#636167",
-    "#353540",
-    "#a94949",
-    "#ca5954",
-    "#e56f4b",
-    "#e39347",
-    "#eeb551",
-    "#e8c65b",
-    "#bda351",
-    "#8b9150",
-    "#557d55",
-    "#446350",
-    "#3e554c",
-    "#8bb0ad",
-    "#769fa6",
-    "#668da9",
-    "#5c699f",
-    "#5a5888",
-    "#7c6da2",
-    "#947a9d",
-    "#bc87a5",
-    "#d9a6a6",
-    "#d4c2b6",
-    "#bdaa97",
-    "#86735b",
-    "#7e674c",
-    "#735b42",
-    "#604b3d",
-    "#4d3f38"
-]
+from PIL import Image
+import log
+
+
+#  Returns the hex code of a single pixel
+def create_hex_color(pixel_info):
+    new_color = '#'
+    for rgb in range(3):
+        value = hex(pixel_info[rgb])
+        new_color += value[2:]
+    return new_color
+
+
+color = ['LIMPID']  # LIMPID free of anything that darkens; completely clear.
+open_image = Image.open('assets/images/colorpalette.png')  # Open the Palette
+
+if open_image.size == (31, 1):
+    log.info("Palette Image Loaded")
+else:
+    log.error("Palette Image Error. Ensure image is 31x1 pixels")
+
+loaded_image = open_image.load()
+for i in range(31):
+    pixel = loaded_image[i, 0]
+    import_color = create_hex_color(pixel)
+    color.append(import_color)
+
+if len(color) != 32:
+    log.error("Error Loading Palette to Memory")
+else:
+    log.info("Palette Image Converted to List")
+    for i in color:
+        print(i)
